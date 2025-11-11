@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { userRouter } from "./user";
 import { spaceRouter } from "./space";
-import { adminRouter } from "./admin";
 import { SigninSchema, SignupSchema } from "../../types";
 import {hash, compare} from "../../scrypt";
 import client from "@repo/db/client";
@@ -27,7 +26,6 @@ router.post("/signup", async (req, res) => {
             data: {
                 username: parsedData.data.username,
                 password: hashedPassword,
-                role: parsedData.data.type === "admin" ? "Admin" : "User",
             }
         })
         res.json({
@@ -66,8 +64,7 @@ router.post("/signin", async (req, res) => {
         }
 
         const token = jwt.sign({
-            userId: user.id,
-            role: user.role
+            userId: user.id
         }, JWT_PASSWORD);
 
         res.json({
@@ -101,4 +98,3 @@ router.get("/avatars", async (req, res) => {
 
 router.use("/user", userRouter)
 router.use("/space", spaceRouter)
-router.use("/admin", adminRouter)
