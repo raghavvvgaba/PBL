@@ -15,9 +15,10 @@ function getRandomString(length: number) {
 }
 
 function getRandomPosition(): { x: number; y: number } {
-    const GRID_SIZE = 8;
-    const x = Math.floor(Math.random() * GRID_SIZE);
-    const y = Math.floor(Math.random() * GRID_SIZE);
+    const GRID_WIDTH = 20;
+    const GRID_HEIGHT = 15;
+    const x = Math.floor(Math.random() * GRID_WIDTH);
+    const y = Math.floor(Math.random() * GRID_HEIGHT);
     return { x, y };
 }
 
@@ -59,7 +60,7 @@ export class User {
                     console.log("Before RoomManager.addUser")
                     RoomManager.getInstance().addUser(spaceId, this);
                     console.log("After RoomManager.addUser")
-                    // Spawn users at random position in 8x8 grid
+                    // Spawn users at random position in 20x15 grid
                     const spawnPosition = getRandomPosition();
                     this.x = spawnPosition.x;
                     this.y = spawnPosition.y;
@@ -92,9 +93,9 @@ export class User {
                     const xDisplacement = Math.abs(this.x - moveX);
                     const yDisplacement = Math.abs(this.y - moveY);
 
-                    // Check if movement is valid (one step in cardinal direction) and within 8x8 grid bounds
+                    // Check if movement is valid (one step in cardinal direction) and within 20x15 grid bounds
                     const isValidMove = (xDisplacement == 1 && yDisplacement== 0) || (xDisplacement == 0 && yDisplacement == 1);
-                    const isInBounds = moveX >= 0 && moveX < 8 && moveY >= 0 && moveY < 8;
+                    const isInBounds = moveX >= 0 && moveX < 20 && moveY >= 0 && moveY < 15;
 
                     if (isValidMove && isInBounds) {
                         this.x = moveX;

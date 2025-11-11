@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Canvas configuration constants
-const GRID_SIZE = 8; // 8x8 grid
-const TILE_SIZE = 50; // Each tile is 50 pixels
+const GRID_WIDTH = 20; // 20 tiles wide
+const GRID_HEIGHT = 15; // 15 tiles high
+const TILE_SIZE = 40; // Each tile is 40 pixels (smaller to fit more tiles)
 
 // TypeScript interfaces
 interface User {
@@ -185,7 +186,7 @@ const Arena = () => {
 
   // Validate if position is within canvas boundaries
   const isValidPosition = (x: number, y: number): boolean => {
-    return x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE;
+    return x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT;
   };
 
   // Handle user movement with client-side prediction
@@ -247,16 +248,16 @@ const Arena = () => {
 
     // Draw grid
     ctx.strokeStyle = '#eee';
-    for (let i = 0; i < canvas.width; i += TILE_SIZE) {
+    for (let i = 0; i <= GRID_WIDTH; i += 1) {
       ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i, canvas.height);
+      ctx.moveTo(i * TILE_SIZE, 0);
+      ctx.lineTo(i * TILE_SIZE, GRID_HEIGHT * TILE_SIZE);
       ctx.stroke();
     }
-    for (let i = 0; i < canvas.height; i += TILE_SIZE) {
+    for (let i = 0; i <= GRID_HEIGHT; i += 1) {
       ctx.beginPath();
-      ctx.moveTo(0, i);
-      ctx.lineTo(canvas.width, i);
+      ctx.moveTo(0, i * TILE_SIZE);
+      ctx.lineTo(GRID_WIDTH * TILE_SIZE, i * TILE_SIZE);
       ctx.stroke();
     }
 
@@ -334,11 +335,11 @@ const Arena = () => {
           <p className="text-sm text-gray-600">Space ID: {params.spaceId}</p>
           <p className="text-sm text-gray-600">Connected Users: {users.size + (currentUser ? 1 : 0)}</p>
         </div>
-        <div className="w-[500px] h-[500px] border rounded-lg overflow-hidden shadow-lg bg-white flex items-center justify-center p-[50px]">
+        <div className="border rounded-lg overflow-hidden shadow-lg bg-white p-4">
           <canvas
             ref={canvasRef}
-            width={400}
-            height={400}
+            width={GRID_WIDTH * TILE_SIZE}
+            height={GRID_HEIGHT * TILE_SIZE}
             className="bg-white"
           />
         </div>
